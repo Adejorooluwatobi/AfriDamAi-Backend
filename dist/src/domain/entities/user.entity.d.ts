@@ -1,0 +1,32 @@
+import { ProfileEntity } from "./profile.entity";
+import { UserSubscriptionEntity } from "./subscription.entity";
+import { AnalyzerEntity } from "./analyzer.entity";
+import { PricingPlan } from "./pricing-plan.entity";
+export declare class UserEntity {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    isActive: boolean;
+    isSuspended: boolean;
+    sex: string;
+    phoneNo: string;
+    nationality?: string;
+    password?: string;
+    refreshToken?: string;
+    resetToken?: string;
+    resetTokenExpiry?: Date;
+    deletedAt?: Date;
+    lastLoginAt?: Date;
+    onboardingCompleted?: boolean;
+    hasCompletedOnboarding?: boolean;
+    profile?: ProfileEntity;
+    subscription?: UserSubscriptionEntity;
+    plan?: PricingPlan;
+    analyzer?: AnalyzerEntity;
+    analyzers?: AnalyzerEntity[];
+    totalRemainingSessions?: number;
+    createdAt: Date;
+    updatedAt: Date;
+    constructor(partial: Partial<UserEntity>);
+}

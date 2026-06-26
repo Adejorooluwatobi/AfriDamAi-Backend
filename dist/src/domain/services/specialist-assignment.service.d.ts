@@ -1,0 +1,35 @@
+import { ISpecialistAssignmentRepository } from '../repositories/specialist-assignment.repository.interface';
+import { SpecialistAssignmentEntity, SpecialistAssignmentStatus } from '../entities/specialist-assignment.entity';
+import { SpecialistService } from './specialist.service';
+import { NotificationService } from './notification.service';
+import { SubscriptionService } from './subscription.service';
+import { AppGateway } from 'src/shared/websockets/app.gateway';
+import { PrismaService } from 'src/infrastructure/persistence/prisma/prisma.service';
+import { WalletService } from './wallet.service';
+import { WalletTransactionService } from './wallet-transaction.service';
+import { MailService } from 'src/infrastructure/messaging/mail/mail.service';
+export declare class SpecialistAssignmentService {
+    private readonly assignmentRepository;
+    private readonly specialistService;
+    private readonly notificationService;
+    private readonly subscriptionService;
+    private readonly appGateway;
+    private readonly prisma;
+    private readonly walletService;
+    private readonly walletTransactionService;
+    private readonly mailService;
+    private readonly logger;
+    constructor(assignmentRepository: ISpecialistAssignmentRepository, specialistService: SpecialistService, notificationService: NotificationService, subscriptionService: SubscriptionService, appGateway: AppGateway, prisma: PrismaService, walletService: WalletService, walletTransactionService: WalletTransactionService, mailService: MailService);
+    assignSpecialists(appointmentId: string, specialistIds: string[], adminId: string): Promise<SpecialistAssignmentEntity[]>;
+    broadcastAppointmentToSpecialists(appointmentId: string): Promise<void>;
+    acceptAssignment(assignmentId: string, specialistId: string): Promise<any>;
+    declineAssignment(assignmentId: string, specialistId: string): Promise<SpecialistAssignmentEntity>;
+    getSpecialistAssignments(specialistId: string, status?: SpecialistAssignmentStatus): Promise<any[]>;
+    findAllAssignments(): Promise<SpecialistAssignmentEntity[]>;
+    getAssignmentsForAppointment(appointmentId: string): Promise<SpecialistAssignmentEntity[]>;
+    private notifySpecialistAssignment;
+    private notifyUserAssignment;
+    private notifyUserSpecialistAccepted;
+    private notifyOtherSpecialistsCancelled;
+    private notifyAdminSpecialistAccepted;
+}

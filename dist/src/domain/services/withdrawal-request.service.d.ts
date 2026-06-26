@@ -1,0 +1,35 @@
+import { IWithdrawalRequestRepository } from '../repositories/withdrawal-request.repository.interface';
+import { WithdrawalRequestEntity } from '../entities/withdrawal-request.entity';
+import { CreateWithdrawalRequestParams } from 'src/utils/type';
+import { WalletService } from './wallet.service';
+import { NotificationService } from './notification.service';
+import { AdminService } from './admin.service';
+import { IUserRepository } from '../repositories/user.repository.interface';
+import { IVendorRepository } from '../repositories/vendor.repository.interface';
+import { ISpecialistRepository } from '../repositories/specialist.repository.interface';
+import { WalletTransactionService } from './wallet-transaction.service';
+import { MailService } from 'src/infrastructure/messaging/mail/mail.service';
+import { AdminNotificationService } from './admin-notification.service';
+export declare class WithdrawalRequestService {
+    private readonly withdrawalRequestRepository;
+    private readonly walletService;
+    private readonly notificationService;
+    private readonly adminService;
+    private readonly walletTransactionService;
+    private readonly userRepository;
+    private readonly vendorRepository;
+    private readonly specialistRepository;
+    private readonly mailService;
+    private readonly adminNotificationService;
+    private readonly logger;
+    constructor(withdrawalRequestRepository: IWithdrawalRequestRepository, walletService: WalletService, notificationService: NotificationService, adminService: AdminService, walletTransactionService: WalletTransactionService, userRepository: IUserRepository, vendorRepository: IVendorRepository, specialistRepository: ISpecialistRepository, mailService: MailService, adminNotificationService: AdminNotificationService);
+    requestWithdrawal(params: CreateWithdrawalRequestParams): Promise<WithdrawalRequestEntity>;
+    getWithdrawalRequestById(id: string): Promise<WithdrawalRequestEntity>;
+    getWithdrawalRequestsByWalletId(walletId: string): Promise<WithdrawalRequestEntity[]>;
+    getPendingWithdrawalRequests(): Promise<WithdrawalRequestEntity[]>;
+    approveWithdrawal(requestId: string, adminId: string, adminNotes?: string): Promise<WithdrawalRequestEntity>;
+    markWithdrawalAsPaid(requestId: string, adminId: string, adminNotes?: string): Promise<WithdrawalRequestEntity>;
+    rejectWithdrawal(requestId: string, adminId: string, reason: string): Promise<WithdrawalRequestEntity>;
+    private notifyAdminsOfNewWithdrawalRequest;
+    private notifyRequesterOfWithdrawalStatus;
+}

@@ -1,0 +1,37 @@
+import { HttpService } from "@nestjs/axios";
+import { AnalyzerEntity } from "../entities/analyzer.entity";
+import { CreateAnalyzerParams, UpdateAnalyzerParams, UploadedFile } from "src/utils/type";
+import type { IAnalyzerRepository } from "../repositories/analyzer.repository.interface";
+import { ValidationService } from 'src/shared/services/validation.service';
+import { RateLimitService } from 'src/shared/services/rate-limit.service';
+import { EnvironmentService } from 'src/shared/services/environment.service';
+import type { IUserRepository } from '../repositories/user.repository.interface';
+import type { IProfileRepository } from '../repositories/profile.repository.interface';
+import { FileUploadService } from "src/shared/services/file-upload.service";
+export declare class AnalyzerService {
+    private readonly analyzerRepository;
+    private readonly userRepository;
+    private readonly profileRepository;
+    private readonly httpService;
+    private readonly validationService;
+    private readonly rateLimitService;
+    private readonly envService;
+    private readonly fileUploadService;
+    private auth;
+    private readonly baseUrl;
+    private readonly diagnosisEndpoint;
+    constructor(analyzerRepository: IAnalyzerRepository, userRepository: IUserRepository, profileRepository: IProfileRepository, httpService: HttpService, validationService: ValidationService, rateLimitService: RateLimitService, envService: EnvironmentService, fileUploadService: FileUploadService);
+    private readonly logger;
+    private getEnrichedContext;
+    scanAndSave(file: UploadedFile, userId: string, moreInfo: string): Promise<AnalyzerEntity>;
+    analyzeSkintoneAndSave(file: UploadedFile, userId: string, moreInfo: string): Promise<AnalyzerEntity>;
+    createAnalyzer(analyzerDetails: CreateAnalyzerParams, userId: string, userType: string): Promise<AnalyzerEntity>;
+    getAnalyzerByUserId(userId: string, userType: string): Promise<AnalyzerEntity | null>;
+    getAllAnalyzers(): Promise<AnalyzerEntity[]>;
+    getAnalyzerById(id: string): Promise<AnalyzerEntity | null>;
+    getAnalyzersByUserId(userId: string): Promise<AnalyzerEntity[]>;
+    updateAnalyzer(id: string, updateData: Partial<UpdateAnalyzerParams>): Promise<AnalyzerEntity>;
+    checkHealth(): Promise<any>;
+    processAiRequest(query: string, flag: 'chat' | 'ingredient_analysis', userId: string, extraMoreInfo?: string): Promise<any>;
+    deleteAnalyzer(id: string): Promise<void>;
+}

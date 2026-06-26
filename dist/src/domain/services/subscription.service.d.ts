@@ -1,0 +1,35 @@
+import { UserSubscriptionEntity } from '../entities/subscription.entity';
+import { ISubscriptionRepository } from '../repositories/subscription.repository.interface';
+import { CreateSubscriptionParams, UpdateSubscriptionParams, GrantSubscriptionParams } from 'src/utils/type';
+import { PricingPlanService } from './pricing-plan.service';
+import { UserSubscriptionWithPlan } from '../types/subscription.types';
+import { PrismaService } from 'src/infrastructure/persistence/prisma/prisma.service';
+import { AdminNotificationService } from './admin-notification.service';
+import { MailService } from 'src/infrastructure/messaging/mail/mail.service';
+import { IUserRepository } from '../repositories/user.repository.interface';
+export declare class SubscriptionService {
+    private readonly subscriptionRepository;
+    private readonly pricingPlanService;
+    private readonly prisma;
+    private readonly adminNotificationService;
+    private readonly mailService;
+    private readonly userRepository;
+    constructor(subscriptionRepository: ISubscriptionRepository, pricingPlanService: PricingPlanService, prisma: PrismaService, adminNotificationService: AdminNotificationService, mailService: MailService, userRepository: IUserRepository);
+    createSubscription(params: CreateSubscriptionParams): Promise<UserSubscriptionEntity>;
+    findActiveSubscription(userId: string): Promise<UserSubscriptionEntity | null>;
+    findByGatewaySubscriptionId(gatewaySubscriptionId: string): Promise<UserSubscriptionEntity | null>;
+    getUserSubscriptions(userId: string): Promise<UserSubscriptionEntity[]>;
+    getUserSubscriptionsWithPlan(userId: string): Promise<UserSubscriptionWithPlan[]>;
+    getSubscriptionById(id: string): Promise<UserSubscriptionWithPlan>;
+    extendSubscription(id: string, months: number): Promise<UserSubscriptionEntity>;
+    cancelSubscription(id: string): Promise<UserSubscriptionEntity>;
+    toggleAutoRenew(id: string, autoRenew: boolean): Promise<UserSubscriptionEntity>;
+    update(id: string, params: UpdateSubscriptionParams): Promise<UserSubscriptionEntity>;
+    activateSubscription(id: string, startDate: Date, endDate: Date): Promise<UserSubscriptionEntity>;
+    decrementRemainingSessions(subscriptionId: string): Promise<UserSubscriptionEntity>;
+    endInstantSession(subscriptionId: string): Promise<UserSubscriptionEntity>;
+    updateRemainingSessions(subscriptionId: string, sessions: number): Promise<UserSubscriptionEntity>;
+    grantSessionsToUser(userId: string, sessions: number): Promise<UserSubscriptionEntity>;
+    adminGrantSubscription(params: GrantSubscriptionParams): Promise<UserSubscriptionEntity>;
+    getUsersWithSubscriptionStatus(status: 'ACTIVE' | 'EXPIRED'): Promise<any[]>;
+}

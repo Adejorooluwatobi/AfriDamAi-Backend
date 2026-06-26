@@ -1,0 +1,55 @@
+import * as TransactionRepo from '../repositories/transaction.repository.interface';
+import * as AppointmentRepo from '../repositories/appointment.repository.interface';
+import { TransactionEntity } from '../entities/transaction.entity';
+import * as paymentGatewayInterface from '../interfaces/payment-gateway.interface';
+import { OrderService } from './order.service';
+import { CreateTransactionParams } from 'src/utils/type';
+import { InvoiceService } from './invoice.service';
+import { IUserRepository } from '../repositories/user.repository.interface';
+import { PricingPlanService } from './pricing-plan.service';
+import { SubscriptionService } from './subscription.service';
+import { AdminService } from './admin.service';
+import { NotificationService } from './notification.service';
+import { WalletService } from './wallet.service';
+import { WalletTransactionService } from './wallet-transaction.service';
+import { OrderRepositoryInterface } from '../repositories/order.repository.interface';
+import { ProductRepositoryInterface } from '../repositories/product.repository.interface';
+import { PrismaService } from 'src/infrastructure/persistence/prisma/prisma.service';
+import { AdminNotificationService } from './admin-notification.service';
+import { MailService } from 'src/infrastructure/messaging/mail/mail.service';
+export declare class TransactionService {
+    private readonly transactionRepository;
+    private readonly paymentGateway;
+    private readonly appointmentRepository;
+    private readonly userRepository;
+    private readonly orderService;
+    private readonly invoiceService;
+    private readonly pricingPlanService;
+    private readonly subscriptionService;
+    private readonly adminService;
+    private readonly notificationService;
+    private readonly walletService;
+    private readonly walletTransactionService;
+    private readonly prisma;
+    private readonly orderRepository;
+    private readonly productRepository;
+    private readonly adminNotificationService;
+    private readonly mailService;
+    private readonly logger;
+    constructor(transactionRepository: TransactionRepo.ITransactionRepository, paymentGateway: paymentGatewayInterface.PaymentGatewayInterface, appointmentRepository: AppointmentRepo.IAppointmentRepository, userRepository: IUserRepository, orderService: OrderService, invoiceService: InvoiceService, pricingPlanService: PricingPlanService, subscriptionService: SubscriptionService, adminService: AdminService, notificationService: NotificationService, walletService: WalletService, walletTransactionService: WalletTransactionService, prisma: PrismaService, orderRepository: OrderRepositoryInterface, productRepository: ProductRepositoryInterface, adminNotificationService: AdminNotificationService, mailService: MailService);
+    initiateTransaction(userId: string, createTransaction: CreateTransactionParams): Promise<{
+        transaction: TransactionEntity;
+        authorizationUrl: string;
+    }>;
+    private fulfillTransaction;
+    private notifyAdminsOnTransactionCompletion;
+    private notifyAdminsAndVendorsOnOrderCompletion;
+    handlePaystackWebhook(payload: any, signature: string): Promise<TransactionEntity | {
+        status: string;
+    }>;
+    verifyTransactionByReference(reference: string): Promise<TransactionEntity>;
+    verifyTransactionById(transactionId: string): Promise<TransactionEntity>;
+    private processVerification;
+    getAllTransaction(): Promise<TransactionEntity[]>;
+    getTransactionById(id: string): Promise<TransactionEntity>;
+}
